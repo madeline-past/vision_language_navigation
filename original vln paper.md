@@ -13,7 +13,7 @@ vln最初的论文（Vision-and-Language Navigation: Interpreting visually-groun
       2. teacher-forcing：只使用groundtruth轨迹上的action，这样agent就只能在groundtruth轨迹上训练
       3. student-forcing：agent使用seq2seq输出的概率分布随机选择action
    3. 结果：
-      1. ![37a7b09ac3afa32feddacf01a6ce69e2](assets/37a7b09ac3afa32feddacf01a6ce69e2.png)val seen和val unseen场景的成功率相差很大，说明模型只学习了已看过的场景，对未看过的场景几乎不具备泛化能力；换言之有很大的overfit，而且无法通过正则化解决。同时，即便在已看过的场景中，成功率也仅有40%左右。
+      1. ![caf16c23ca1cc5e269770a95d6600096](assets/caf16c23ca1cc5e269770a95d6600096-1730367081825-1.png)val seen和val unseen场景的成功率相差很大，说明模型只学习了已看过的场景，对未看过的场景几乎不具备泛化能力；换言之有很大的overfit，而且无法通过正则化解决。同时，即便在已看过的场景中，成功率也仅有40%左右。
       2. ![e61b73d74a0e83919d1a3f1a1a8bedca](assets/e61b73d74a0e83919d1a3f1a1a8bedca.png)从训练折线图上来看，只有在训练集上loss在不断减小，而在val unseen集上loss越跑越大。即使在val seen集上，loss也没有随着训练集上loss不断减小而减小，反而在震荡中缓慢上升。对此，我怀疑是agent没有explore完整个场景，有些地方还没探索到。
 4. 个人总结：
    1. 从结果来看，无论是seen和unseen场景，其成功率都挺低的。从Navigation Error (m)来说，agent的误差有八九米，人类误差只有1.61m。说明离目标点都还挺远的。

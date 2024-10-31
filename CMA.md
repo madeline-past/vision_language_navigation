@@ -1,6 +1,6 @@
 ### Reinforced Cross-Modal Matching and Self-Supervised Imitation Learning  for Vision-Language Navigation
 
-discrete vln
+加入了RL方法的discrete vln
 
 #### Reinforced Cross-Modal Matching
 
