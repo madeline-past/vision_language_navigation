@@ -6,15 +6,13 @@ discrete vln
 
 The RCM framework mainly consists of two modules： a reasoning navigator πθ and a matching critic Vβ.
 
-基于training data训练模型
-
 1.Cross-Modal Reasoning Navigator
 
 注意，此模型在每个离散点上观察到的是全景图。
 
-![883f71abe7ffb66dc601794f0c0b7ff2](assets/883f71abe7ffb66dc601794f0c0b7ff2.png)
+简单来说，就是attention+LSTM套了好几个
 
-最后action predictor怎么算的没看懂
+![883f71abe7ffb66dc601794f0c0b7ff2](assets/883f71abe7ffb66dc601794f0c0b7ff2.png)
 
 2.Cross-Modal Matching Critic
 
@@ -40,6 +38,8 @@ extrinsic reward也包括两部分，一是评估action使得agent靠近目标�
 
 上述模型和训练都是基于已有数据，下面的模型将使得agent在没有数据的情况下自由探索unseen environment，并进行策略优化
 
+![41af613343d086b5a485294ed7cd2d5c](assets/41af613343d086b5a485294ed7cd2d5c.png)
+
 SIL借用了上述Matching Critic模型。给定language instruction，agent先生成一组possible trajectories，然后由Matching Critic模型进行评估，筛选出最优的trajectory。接下来，这个最优的trajectory就被视为之前supervised learning的ground-truth trajectory，可以使用之前热启动的方法优化策略。
 
 
@@ -54,5 +54,5 @@ SIL借用了上述Matching Critic模型。给定language instruction，agent先�
 
 另一种是RL中的policy gradient方法，也就是REINFORCE
 
-相同点在于，两者都使用了图三中的策略函数
+相同点在于，两者都使用了一样的策略函数
 

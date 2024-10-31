@@ -16,12 +16,9 @@ vln最初的论文（Vision-and-Language Navigation: Interpreting visually-groun
       1. ![37a7b09ac3afa32feddacf01a6ce69e2](assets/37a7b09ac3afa32feddacf01a6ce69e2.png)val seen和val unseen场景的成功率相差很大，说明模型只学习了已看过的场景，对未看过的场景几乎不具备泛化能力；换言之有很大的overfit，而且无法通过正则化解决。同时，即便在已看过的场景中，成功率也仅有40%左右。
       2. ![e61b73d74a0e83919d1a3f1a1a8bedca](assets/e61b73d74a0e83919d1a3f1a1a8bedca.png)从训练折线图上来看，只有在训练集上loss在不断减小，而在val unseen集上loss越跑越大。即使在val seen集上，loss也没有随着训练集上loss不断减小而减小，反而在震荡中缓慢上升。对此，我怀疑是agent没有explore完整个场景，有些地方还没探索到。
 4. 个人总结：
-   1. 之所以agent在unseen场景泛化能力差，是不是因为提供训练的场景太少了呢。如果增加训练的场景数目，是否会有更好的结果？
-   2. seq2seq模型参数还是比较少，如果能有更多的参数，更大的模型，是否能记住更多，从而提升结果？
-   3. 对于seq2seq模型，他对observation做的预处理仅仅是丢到预训练好的resnet抽取特征，然后这些特征就直接被送到RNN中。但是，这些抽出来的特征，其中有多少是vln任务关心的特征呢？我觉得不会有很多。如果从这里入手改进，在resnet的最后再加入可训练的全连接层提取有用的特征，会不会提升性能？
-   4. 感觉teacher-forcing挺垃圾的……直接用student-forcing得了
-   5. 从结果来看，无论是seen和unseen场景，其成功率都挺低的。从Navigation Error (m)来说，agent的误差有八九米，人类误差只有1.61m。说明离目标点都还挺远的。
-   6. 单就论文提出的seq2seq模型来说，我觉得形式很优美，RNN+ATTENTION挺符合数据集特点。
+   1. 从结果来看，无论是seen和unseen场景，其成功率都挺低的。从Navigation Error (m)来说，agent的误差有八九米，人类误差只有1.61m。说明离目标点都还挺远的。
+   2. 论文提出的seq2seq模型，我觉得形式很优美，LSTM+ATTENTION很符合数据集特点。缺点也挺明显，模型太小，很容易overfit。
+   3. 感觉teacher-forcing挺垃圾的，直接用student-forcing得了
 
 
 
