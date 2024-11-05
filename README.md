@@ -37,4 +37,50 @@ windowless context
 
 而在本地wsl上运行该指令什么也没有输出。
 
+因此还是决定使用autodl服务器
 
+***
+
+在autodl服务器端安装habitat的时候报错
+
+```
+(base) root@autodl-container-78f345b3a1-1265f8ce:~# conda install habitat-sim -c conda-forge -c aihabitat
+Collecting package metadata (current_repodata.json): done
+Solving environment: - failed with initial frozen solve. Retrying with flexible solve.
+```
+
+解决办法：更新conda，更新会消耗不少时间(autodl提供的conda版本真垃圾)
+
+```
+conda update -n base conda
+```
+
+~~使用mamba~~(可以不用)
+
+```
+conda install mamba -c conda-forge
+```
+
+更新conda后，成功安装habitat-sim和habitat-lab。
+
+***
+
+使用指令
+
+```
+python -m habitat_sim.utils.datasets_download --uids habitat_test_scenes --data-path data/
+```
+
+下载3D场景时报错：
+
+```
+ImportError: libEGL.so.1: cannot open shared object file: No such file or directory
+```
+
+解决办法([ImportError: libEGL.so.1: cannot open shared object file: No such file or directory · Issue #375 · scottlawsonbc/audio-reactive-led-strip](https://github.com/scottlawsonbc/audio-reactive-led-strip/issues/375))：
+
+```
+sudo apt-get install freeglut3-dev
+```
+
+目前进度：habitat环境搭建完毕，habitat-lab测试数据下载完毕。
