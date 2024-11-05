@@ -83,4 +83,6 @@ ImportError: libEGL.so.1: cannot open shared object file: No such file or direct
 sudo apt-get install freeglut3-dev
 ```
 
-目前进度：habitat环境搭建完毕，habitat-lab测试数据下载完毕。
+目前安装进度：habitat环境搭建完毕，habitat-lab测试数据下载完毕。
+
+目前学习进度：habitat-sim tutorial除了navmesh部分已经看完
