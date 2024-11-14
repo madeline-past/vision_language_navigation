@@ -1,0 +1,3 @@
+# ETPNav+MapGPT
+
+利用ETPNav的Topological Mapping逐渐构造全局map，map信息输入给MapGPT，MapGPT生成下一步动作，选择一个邻近的waypoint跳转，再利用dcvln中的方法将这个high-level action变成low-level action
