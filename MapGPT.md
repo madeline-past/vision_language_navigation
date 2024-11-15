@@ -204,8 +204,6 @@ sim.setDiscretizedViewingAngles(True)   # Set increment/decrement to 30 degree. 
   args.scan_data_dir = os.path.join(ROOTDIR, 'Matterport3D', 'v1_unzip_scans')
 ```
 
-难道是存放[RGB_Observations.zip](https://connecthkuhk-my.sharepoint.com/:f:/g/personal/jadge_connect_hku_hk/Eq00RV04jXpNkwqowKh5mYABBTqBG1U2RXgQ7FvaGweJOQ?e=rL1d6p)的地方？
-
 
 
 R2RNavBatch.gt_trajs定义如下
@@ -225,7 +223,7 @@ R2RNavBatch.ix = 0，保存目前数据评估到哪里了
 
 R2RNavBatch.graphs={scanid:G}存放图的信息
 
-R2RNavBatch.sim又新建了一个没指定图像地址的sim，应该用的默认图像吧
+R2RNavBatch.sim又新建了一个配置相同的sim
 
 R2RNavBatch.buffered_state_dict = {}
 
@@ -307,6 +305,8 @@ R2RNavBatch的reset 结束
 
 到这里都实现批量，后面只将第一个批量取出送入llm预测动作
 
+用正则式取出动作，执行动作
+
 最后更新history
 
 ```
@@ -315,13 +315,7 @@ self.prompt_manager.make_history(a_t, nav_input, t)
 
 
 
-
-
-
-
-
-
-#### 问题
+#### 总结
 
 1. in [MapGPT/GPT/one_stage_prompt_manager.py at main · chen-judge/MapGPT](https://github.com/chen-judge/MapGPT/blob/main/GPT/one_stage_prompt_manager.py) line67
 
@@ -332,16 +326,79 @@ direction = self.get_action_concept(cc['absolute_heading'] - previous_angle[i]['
 ​	解答：因为所有的elevation都为0
 
 2. 用别人视角里包含路径点的一张图概括路径点的特征，是否有些片面。个人感觉可以在后续采到同一路径点不同视角下的图像时，也可以保留之前图片，一起作为该路径点的特征。
-3. ce中路径点会改变，如何构造一个和离散相似的map
-4. ```
-   --img_root /path/to/images
-   img_path = os.path.join(self.args.img_root, scanId, viewpointId, str(ix) + '.jpg')
-   ```
+3. ce中路径点会改变，如何构造一个和离散相似的map：参考ETPNav
+4. 
 
-   用来存放图像？
+```
+--img_root /path/to/images
+img_path = os.path.join(self.args.img_root, scanId, viewpointId, str(ix) + '.jpg')
+```
 
-   
+--img_root用来存放图像[RGB_Observations.zip](https://connecthkuhk-my.sharepoint.com/:f:/g/personal/jadge_connect_hku_hk/Eq00RV04jXpNkwqowKh5mYABBTqBG1U2RXgQ7FvaGweJOQ?e=rL1d6p) 
+
+issue解答：
+
+Please follow this and --img_root should be the path to your images:
+"The observation images need to be collected in advance from the simulator. You can use your own saved images or use the [RGB_Observations.zip](https://connecthkuhk-my.sharepoint.com/:f:/g/personal/jadge_connect_hku_hk/Eq00RV04jXpNkwqowKh5mYABBTqBG1U2RXgQ7FvaGweJOQ?e=rL1d6p) we have processed."
+
+
+
+#### 疑问
+
+```
+if scan_data_dir:
+    sim.setDatasetPath(scan_data_dir)
+args.scan_data_dir = os.path.join(ROOTDIR, 'Matterport3D', 'v1_unzip_scans')
+```
+
+但是scan_data_dir为空，还是说里面应该放[RGB_Observations.zip](https://connecthkuhk-my.sharepoint.com/:f:/g/personal/jadge_connect_hku_hk/Eq00RV04jXpNkwqowKh5mYABBTqBG1U2RXgQ7FvaGweJOQ?e=rL1d6p) ？
+
+```
+        /**
+         * Set a non-standard path to the <a href="https://niessner.github.io/Matterport/">Matterport3D dataset</a>.
+         * The provided directory must contain subdirectories of the form:
+         * "<scanId>/matterport_skybox_images/". Default is "./data/v1/scans/".
+         */
+        void setDatasetPath(const std::string& path);
+```
+
+
+
+
 
 #### 移植改动：
 
-1. 
+1. 将ce数据集以类似MapGPT_72_scenes_processed.json的形式传入
+1. 如何将habitat simulator输出的图像送到gpt中
+1. sim.setNavGraphPath(connectivity_dir)中的连通图？
+
+
+
+
+
+#### 研究connectivity_dir下的连通图的作用
+
+```python
+class R2RNavBatch(object):
+    def __init__()
+        self._load_nav_graphs()
+
+    def _load_nav_graphs(self):
+        """
+        load graph from self.scan,
+        Store the graph {scan_id: graph} in self.graphs
+        Store the shortest path {scan_id: {view_id_x: {view_id_y: [path]} } } in self.paths
+        Store the distances in self.distances. (Structure see above)
+        Load connectivity graph for each scan, useful for reasoning about shortest paths
+        :return: None
+        """
+        print('Loading navigation graphs for %d scans' % len(self.scans))
+        self.graphs = load_nav_graphs(self.connectivity_dir, self.scans)
+        self.shortest_paths = {}
+        for scan, G in self.graphs.items():  # compute all shortest paths
+            self.shortest_paths[scan] = dict(nx.all_pairs_dijkstra_path(G))
+        self.shortest_distances = {}
+        for scan, G in self.graphs.items():  # compute all shortest paths
+            self.shortest_distances[scan] = dict(nx.all_pairs_dijkstra_path_length(G))
+```
+
