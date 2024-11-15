@@ -190,7 +190,7 @@ EnvBatch.sims 以列表形式储存了批量大小个MatterSim.Simulator()
 
 并且设置了vfov=60，以及
 
-```
+```python
 if scan_data_dir:
     sim.setDatasetPath(scan_data_dir)
 sim.setNavGraphPath(connectivity_dir)
@@ -200,7 +200,7 @@ sim.setDiscretizedViewingAngles(True)   # Set increment/decrement to 30 degree. 
 
 但是scan_data_dir为空
 
-```
+```python
   args.scan_data_dir = os.path.join(ROOTDIR, 'Matterport3D', 'v1_unzip_scans')
 ```
 
@@ -208,7 +208,7 @@ sim.setDiscretizedViewingAngles(True)   # Set increment/decrement to 30 degree. 
 
 R2RNavBatch.gt_trajs定义如下
 
-```
+```python
 self.gt_trajs = self._get_r2r_gt_trajs(self.data) # for evaluation
 
     def _get_r2r_gt_trajs(self, data):
@@ -259,7 +259,7 @@ self.sims[i].newEpisode([scanId], [viewpointId], [heading], [0])初始化episode
 
 进入make_candidate中
 
-```
+```python
 for ix in range(36):
     if ix == 0:
         self.sim.newEpisode([scanId], [viewpointId], [0], [math.radians(-30)])
@@ -281,7 +281,7 @@ R2RNavBatch的reset 结束
 
 继续rollout
 
-```
+```python
         # Record the navigation path
         traj = [{
             'instr_id': ob['instr_id'],
@@ -293,7 +293,7 @@ R2RNavBatch的reset 结束
 
 下面开始构造prompt
 
-```
+```python
             cand_inputs = self.prompt_manager.make_action_prompt(obs, previous_angle)
             if self.args.response_format == 'str':
                 nav_input = self.prompt_manager.make_r2r_prompts(cand_inputs=cand_inputs, obs=obs, t=t)
@@ -309,7 +309,7 @@ R2RNavBatch的reset 结束
 
 最后更新history
 
-```
+```python
 self.prompt_manager.make_history(a_t, nav_input, t)
 ```
 
@@ -319,7 +319,7 @@ self.prompt_manager.make_history(a_t, nav_input, t)
 
 1. in [MapGPT/GPT/one_stage_prompt_manager.py at main · chen-judge/MapGPT](https://github.com/chen-judge/MapGPT/blob/main/GPT/one_stage_prompt_manager.py) line67
 
-```
+```python
 direction = self.get_action_concept(cc['absolute_heading'] - previous_angle[i]['heading'],cc['absolute_elevation'] - 0)
 ```
 
@@ -345,7 +345,7 @@ Please follow this and --img_root should be the path to your images:
 
 #### 疑问
 
-```
+```python
 if scan_data_dir:
     sim.setDatasetPath(scan_data_dir)
 args.scan_data_dir = os.path.join(ROOTDIR, 'Matterport3D', 'v1_unzip_scans')
@@ -353,7 +353,7 @@ args.scan_data_dir = os.path.join(ROOTDIR, 'Matterport3D', 'v1_unzip_scans')
 
 但是scan_data_dir为空，还是说里面应该放[RGB_Observations.zip](https://connecthkuhk-my.sharepoint.com/:f:/g/personal/jadge_connect_hku_hk/Eq00RV04jXpNkwqowKh5mYABBTqBG1U2RXgQ7FvaGweJOQ?e=rL1d6p) ？
 
-```
+```c++
         /**
          * Set a non-standard path to the <a href="https://niessner.github.io/Matterport/">Matterport3D dataset</a>.
          * The provided directory must contain subdirectories of the form:
@@ -370,7 +370,8 @@ args.scan_data_dir = os.path.join(ROOTDIR, 'Matterport3D', 'v1_unzip_scans')
 
 1. 将ce数据集以类似MapGPT_72_scenes_processed.json的形式传入
 1. 如何将habitat simulator输出的图像送到gpt中
-1. sim.setNavGraphPath(connectivity_dir)中的连通图？
+1. ~~sim.setNavGraphPath(connectivity_dir)中的连通图~~
+1. 得到ce中的shortest_distances
 
 
 
@@ -394,11 +395,58 @@ class R2RNavBatch(object):
         """
         print('Loading navigation graphs for %d scans' % len(self.scans))
         self.graphs = load_nav_graphs(self.connectivity_dir, self.scans)
+        
+        #事实上，self.shortest_paths根本没有用在其他地方
         self.shortest_paths = {}
         for scan, G in self.graphs.items():  # compute all shortest paths
             self.shortest_paths[scan] = dict(nx.all_pairs_dijkstra_path(G))
+            
+            
         self.shortest_distances = {}
         for scan, G in self.graphs.items():  # compute all shortest paths
             self.shortest_distances[scan] = dict(nx.all_pairs_dijkstra_path_length(G))
 ```
 
+```python
+def load_nav_graphs(connectivity_dir, scans):
+    ''' Load connectivity graph for each scan '''
+
+    def distance(pose1, pose2):
+        ''' Euclidean distance between two graph poses '''
+        return ((pose1['pose'][3]-pose2['pose'][3])**2\
+          + (pose1['pose'][7]-pose2['pose'][7])**2\
+          + (pose1['pose'][11]-pose2['pose'][11])**2)**0.5
+
+    graphs = {}
+    for scan in scans:
+        with open(os.path.join(connectivity_dir, '%s_connectivity.json' % scan)) as f:
+            G = nx.Graph()
+            positions = {}
+            data = json.load(f)
+            for i,item in enumerate(data):
+                if item['included']:
+                    for j,conn in enumerate(item['unobstructed']):
+                        if conn and data[j]['included']:
+                            positions[item['image_id']] = np.array([item['pose'][3],
+                                    item['pose'][7], item['pose'][11]]);
+                            assert data[j]['unobstructed'][i], 'Graph should be undirected'
+                            G.add_edge(item['image_id'],data[j]['image_id'],weight=distance(item,data[j]))
+            nx.set_node_attributes(G, values=positions, name='position')
+            graphs[scan] = G
+    return graphs
+```
+
+事实上，只有R2RNavBatch.shortest_distances在后续的过程中被用到，它被加入到了_get_obs函数的返回结果中。
+
+```python
+            # RL reward. The negative distance between the state and the final state
+            # There are multiple gt end viewpoints on REVERIE. 
+            if ob['instr_id'] in self.gt_trajs:
+                ob['distance'] = self.shortest_distances[ob['scan']][ob['viewpoint']][item['path'][-1]]
+            else:
+                ob['distance'] = 0
+```
+
+pyshortest_distances可以作为RL的评估指标，以及在evaluation阶段中使用。
+
+ce中可以得到shortest_distances吗？
