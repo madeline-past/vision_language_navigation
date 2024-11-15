@@ -221,11 +221,11 @@ self.gt_trajs = self._get_r2r_gt_trajs(self.data) # for evaluation
         return gt_trajs
 ```
 
-R2RNavBatch.ix = 0
+R2RNavBatch.ix = 0，保存目前数据评估到哪里了
 
 R2RNavBatch.graphs={scanid:G}存放图的信息
 
-R2RNavBatch.sim又新建了一个没指定图像地址的sim
+R2RNavBatch.sim又新建了一个没指定图像地址的sim，应该用的默认图像吧
 
 R2RNavBatch.buffered_state_dict = {}
 
@@ -233,13 +233,85 @@ R2RNavBatch.buffered_state_dict = {}
 
 
 
+接下来实例化GPTNavAgent对象，储存在agent中
+
+GPTNavAgent.env=R2RNavBatch
+
+GPTNavAgent.prompt_manager = OneStagePromptManager(self.args)
+
+GPTNavAgent.logs = defaultdict(list)
 
 
 
+接下来进入主函数agent.test(args=args)
 
+agent.results = {}
 
+进入rollout
 
+进入R2RNavBatch的reset 
 
+R2RNavBatch.batch保存一个批量大小的数据
+
+self.sims[i].newEpisode([scanId], [viewpointId], [heading], [0])初始化episode
+
+最后R2RNavBatch._get_obs()返回observations
+
+在R2RNavBatch._get_obs()中，首先要调用self.make_candidate(state.scanId, state.location.viewpointId, state.viewIndex)获得周围点的信息
+
+进入make_candidate中
+
+```
+for ix in range(36):
+    if ix == 0:
+        self.sim.newEpisode([scanId], [viewpointId], [0], [math.radians(-30)])
+    elif ix % 12 == 0:
+        self.sim.makeAction([0], [1.0], [1.0])
+    else:
+        self.sim.makeAction([0], [1.0], [0])
+```
+
+使用另外一个单独获取周围点的sim，对周围扫36次，获取周围点的各种信息，包括周围点的图像。
+
+将周围点信息保存在R2RNavBatch.buffered_state_dict[long_id]中，下次访问相同点时就可直接使用。
+
+返回周围点信息列表，make_candidate结束。
+
+_get_obs返回所有观察结果，不包括自己当前视角下的图像信息。
+
+R2RNavBatch的reset 结束
+
+继续rollout
+
+```
+        # Record the navigation path
+        traj = [{
+            'instr_id': ob['instr_id'],
+            'path': [[ob['viewpoint']]],
+            'details': {},
+            'a_t': {},
+        } for ob in obs]
+```
+
+下面开始构造prompt
+
+```
+            cand_inputs = self.prompt_manager.make_action_prompt(obs, previous_angle)
+            if self.args.response_format == 'str':
+                nav_input = self.prompt_manager.make_r2r_prompts(cand_inputs=cand_inputs, obs=obs, t=t)
+            elif self.args.response_format == 'json':
+                nav_input = self.prompt_manager.make_r2r_json_prompts(cand_inputs=cand_inputs, obs=obs, t=t)
+            else:
+                raise NotImplemented
+```
+
+到这里都实现批量，后面只将第一个批量取出送入llm预测动作
+
+最后更新history
+
+```
+self.prompt_manager.make_history(a_t, nav_input, t)
+```
 
 
 
@@ -257,11 +329,16 @@ R2RNavBatch.buffered_state_dict = {}
 direction = self.get_action_concept(cc['absolute_heading'] - previous_angle[i]['heading'],cc['absolute_elevation'] - 0)
 ```
 
+​	解答：因为所有的elevation都为0
+
 2. 用别人视角里包含路径点的一张图概括路径点的特征，是否有些片面。个人感觉可以在后续采到同一路径点不同视角下的图像时，也可以保留之前图片，一起作为该路径点的特征。
 3. ce中路径点会改变，如何构造一个和离散相似的map
 4. ```
    --img_root /path/to/images
+   img_path = os.path.join(self.args.img_root, scanId, viewpointId, str(ix) + '.jpg')
    ```
+
+   用来存放图像？
 
    
 
