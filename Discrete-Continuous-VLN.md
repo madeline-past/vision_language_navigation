@@ -4,6 +4,10 @@
 
 
 
+可以修改config.EVAL.SAVE_RESULTS=False，不保存evaluation result
+
+
+
 [Data · VLN-CE](https://jacobkrantz.github.io/vlnce/data)
 
 ```
@@ -53,6 +57,11 @@ config.TASK_CONFIG=get_task_config(habitat_extensions/config/vlnce_task.yaml)
 ```
 world_size = self.config.GPU_NUMBERS
 
+self.config.TASK_CONFIG.DATASET.LANGUAGES = self.config.EVAL.LANGUAGES
+self.config.TASK_CONFIG.DATASET.SPLIT = self.config.EVAL.SPLIT
+self.config.TASK_CONFIG.TASK.NDTW.SPLIT = self.config.EVAL.SPLIT
+self.config.TASK_CONFIG.TASK.SDTW.SPLIT = self.config.EVAL.SPLIT
+
 resize_config = self.config.RL.POLICY.OBS_TRANSFORMS.RESIZER_PER_SENSOR.SIZES
 _C.RL.POLICY.OBS_TRANSFORMS.RESIZER_PER_SENSOR = CN()
 _C.RL.POLICY.OBS_TRANSFORMS.RESIZER_PER_SENSOR.SIZES = [
@@ -92,7 +101,49 @@ config.SIMULATOR.AGENT_0.SENSORS保存所有sim的名称
 
 ```
 self.traj = self.collect_val_traj()
+
+# self.config.TASK_CONFIG.TASK.NDTW.GT_PATH = 
+# data/datasets/R2R_VLNCE_v1-2_preprocessed/{split}/{split}_gt.json.gz
+    def collect_val_traj(self):
+        from habitat_extensions.task import ALL_ROLES_MASK, RxRVLNCEDatasetV1
+        trajectories = defaultdict(list)
+        split = self.config.TASK_CONFIG.DATASET.SPLIT
+
+        if 'rxr' in self.config.BASE_TASK_CONFIG_PATH:
+			xxx
+        else:
+            with gzip.open(
+                self.config.TASK_CONFIG.TASK.NDTW.GT_PATH.format(
+                    split=split)
+            ) as f:
+                gt_data = json.load(f)
+
+        self.gt_data = gt_data
+
+        trajectories = gt_data
+        self.trajectories = gt_data
+        trajectories = list(trajectories.keys())[self.config.local_rank::self.config.GPU_NUMBERS]
+
+        return trajectories
 ```
+
+
+
+进入self._eval_checkpoint()
+
+首先进入construct_envs
+
+```
+        # config.ENV_NAME='VLNCEDaggerEnv'
+		# 得到VLNCEDaggerEnv的环境类
+        envs = construct_envs(
+            config, get_env_class(config.ENV_NAME),
+            auto_reset_done=False,
+            episodes_allowed=self.traj
+        )
+```
+
+
 
 
 
