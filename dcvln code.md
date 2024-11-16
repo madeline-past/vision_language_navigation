@@ -42,21 +42,16 @@ class BaseVLNCETrainer(BaseILTrainer):
 
 
 
-build envs:
+build envs，得到VLNCEDaggerEnv的环境类
 
 ```
+        # config.ENV_NAME='VLNCEDaggerEnv'
         envs = construct_envs(
             config, get_env_class(config.ENV_NAME),
             auto_reset_done=False,
             episodes_allowed=self.traj
         )
 ```
-
-get_env_class(config.ENV_NAME)
-
-config.ENV_NAME='VLNCEDaggerEnv'
-
-得到VLNCEDaggerEnv的环境类
 
 
 
@@ -65,7 +60,7 @@ config.ENV_NAME='VLNCEDaggerEnv'
 > in vlnce_baselines/common/env_utils.py line66
 >
 > ```
-> #type='VLN-CE-v1'
+> #config.TASK_CONFIG.DATASET.TYPE='VLN-CE-v1'
 > dataset = make_dataset(config.TASK_CONFIG.DATASET.TYPE)
 > ```
 >
@@ -97,6 +92,8 @@ config.ENV_NAME='VLNCEDaggerEnv'
 >
 > in vlnce_baselines/common/env_utils.py line66
 >
+> scenes记录所有场景的id
+>
 > ```
 > scenes = dataset.get_scenes_to_load(config.TASK_CONFIG.DATASET)
 > ```
@@ -116,7 +113,13 @@ config.ENV_NAME='VLNCEDaggerEnv'
 >
 > dataset = cls(config)构造数据集
 >
-> 
+> scenes根据num_envs的个数切分成scene_splits
+>
+> ```
+> scene_splits=[['2azQ1b91cZZ', '8194nk5LbLH', 'EU6Fwq7SyZv', 'QUCTc6BB5sX', 'TbHJrupSAjP', 'X7HyMhZNoso', 'Z6MFQCViBuw', 'oLBMNvg9in8', 'pLe4wQe7qrG', ...]]
+> ```
+>
+> 1
 >
 > ```
 > # created inside habitat library
@@ -148,36 +151,37 @@ initialize policy:
 > 
 >
 > ```
+> 		# self.config.MODEL.policy_name='PolicyViewSelectionCMA'
 > 		policy = baseline_registry.get_policy(self.config.MODEL.policy_name)
->         self.policy = policy.from_config(
->             config=config,
->             observation_space=observation_space,
->             action_space=action_space,
->         )
+>      	self.policy = policy.from_config(
+>          config=config,
+>          observation_space=observation_space,
+>          action_space=action_space,
+>      )
 > ```
 >
 > initialize net
 >
 > ```
 > class CMANet(Net):
->     r"""A cross-modal attention (CMA) network that contains:
->     Instruction encoder
->     Depth encoder
->     RGB encoder
->     CMA state encoder
->     """
+>  r"""A cross-modal attention (CMA) network that contains:
+>  Instruction encoder
+>  Depth encoder
+>  RGB encoder
+>  CMA state encoder
+>  """
 > ```
 >
 > initialize the waypoint predictor here
 >
 > ```
->         self.waypoint_predictor = BinaryDistPredictor_TRM(device=self.device)
->         self.waypoint_predictor.load_state_dict(
->             torch.load(
->                 './waypoint_prediction/checkpoints/check_val_best_avg_wayscore',
->                 map_location = torch.device('cpu'),
->             )['predictor']['state_dict']
->         )
+>      self.waypoint_predictor = BinaryDistPredictor_TRM(device=self.device)
+>      self.waypoint_predictor.load_state_dict(
+>          torch.load(
+>              './waypoint_prediction/checkpoints/check_val_best_avg_wayscore',
+>              map_location = torch.device('cpu'),
+>          )['predictor']['state_dict']
+>      )
 > ```
 >
 > 
@@ -206,10 +210,22 @@ observations = extract_instruction_tokens(
 ![08cc0f7c29b062067d4aaad50a913c8e](assets/08cc0f7c29b062067d4aaad50a913c8e.png)
 
 ```
-
+        while envs.num_envs > 0 and len(stats_episodes) < episodes_to_eval:
+            t += 1
+            current_episodes = envs.current_episodes()
+            positions = []; headings = []
+            for ob_i in range(len(current_episodes)):
+                agent_state_i = envs.call_at(ob_i,
+                        "get_agent_info", {})
+                positions.append(agent_state_i['position'])
+                headings.append(agent_state_i['heading'])
 ```
 
 
+
+```
+agent_state_i = {'position': [5.029807090759277, 0.17162801325321198, 4.014754295349121], 'heading': -1.6084072725305898, 'stop': False}
+```
 
 
 

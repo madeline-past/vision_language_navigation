@@ -93,9 +93,21 @@ def get_camera_orientations(num_views):
 
 
 
+```
+camera_orientations = {'30.0': [0.0, 0.5235987755982988, 0.0], '60.0': [0.0, 1.0471975511965976, 0.0], '90.0': [0.0, 1.5707963267948966, 0.0], '120.0': [0.0, 2.0943951023931953, 0.0], '150.0': [0.0, 2.617993877991494, 0.0], '180.0': [0.0, 3.141592653589793, 0.0], '210.0': [0.0, 3.665191429188092, 0.0], '240.0': [0.0, 4.1887902047863905, 0.0], '270.0': [0.0, 4.71238898038469, 0.0], '300.0': [0.0, 5.235987755982988, 0.0], '330.0': [0.0, 5.759586531581287, 0.0]}
+```
+
 config.SIMULATOR是个类，里面保存所有sim信息，作为这个类的属性
 
-config.SIMULATOR.AGENT_0.SENSORS保存所有sim的名称
+self.config.SENSORS=config.SIMULATOR.AGENT_0.SENSORS保存所有sim的名称
+
+```
+self.config.RL.POLICY.OBS_TRANSFORMS.RESIZER_PER_SENSOR.SIZES = resize_config
+```
+
+
+
+
 
 
 
@@ -129,7 +141,19 @@ self.traj = self.collect_val_traj()
 
 
 
+```
+self.gt_data = {'991': {'locations': [...], 'forward_steps': 39, 'actions': [...]}, '1247': {'locations': [...], 'forward_steps': 29, 'actions': [...]}, '1019': {'locations': [...], 'forward_steps': 32, 'actions': [...]}, '338': {'locations': [...], 'forward_steps': 27, 'actions': [...]}, '1487': {'locations': [...], 'forward_steps': 39, 'actions': [...]}, '259': {'locations': [...], 'forward_steps': 22, 'actions': [...]}, '1711': {'locations': [...], 'forward_steps': 27, 'actions': [...]}, '1122': {'locations': [...], 'forward_steps': 34, 'actions': [...]}, '1018': {'locations': [...], 'forward_steps': 32, 'actions': [...]}, '1369': {'locations': [...], 'forward_steps': 31, 'actions': [...]}, '1280': {'locations': [...], 'forward_steps': 46, 'actions': [...]}, '406': {'locations': [...], 'forward_steps': 42, 'actions': [...]}, '1121': {'locations': [...], 'forward_steps': 34, 'actions': [...]}, '1125': {'locations': [...], 'forward_steps': 26, 'actions': [...]}, ...}
+
+self.traj = self.collect_val_traj()=['991', '1247', '1019', '338', '1487', '259', '1711', '1122', '1018', '1369', '1280', '406', '1121', '1125', ...]
+```
+
+
+
+
+
 进入self._eval_checkpoint()
+
+
 
 首先进入construct_envs
 
@@ -141,6 +165,19 @@ self.traj = self.collect_val_traj()
             auto_reset_done=False,
             episodes_allowed=self.traj
         )
+```
+
+在construct_envs中
+
+VLNCEDatasetV1.dataset
+
+construct_envs结束
+
+
+
+```
+        obs_transforms = get_active_obs_transforms(config)
+        # obs_transforms = [CenterCropperPerSensor()]
 ```
 
 
