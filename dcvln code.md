@@ -309,15 +309,38 @@ rgb_embedding: [batch_size x RGB_ENCODER.output_size]
 
    
 
-3. navigation action logits
+3. navigation action logits，也就是用预测出来的waypoint，根据具体使用的离散的模型，选择下一步跳转到的waypoint
+
+```
+                    logits, rnn_states = self.policy.net(
+                        mode = 'navigation',
+                        observations = batch,
+                        instruction = instruction_embedding,
+                        text_mask = all_lang_masks,
+                        rnn_states = rnn_states,
+                        headings = headings,
+                        cand_rgb = cand_rgb, 
+                        cand_depth = cand_depth,
+                        cand_direction = cand_direction,
+                        cand_mask = cand_mask,
+                        masks = not_done_masks,
+                    )
+                    logits = logits.masked_fill_(cand_mask, -float('inf'))
+```
+
+得到action
+
+```
+env_actions=[{'action': {'action': 4, 'action_args':{'angle': 1.466076374053955, 'distance': 2.0}}}]
+
+outputs = envs.step(env_actions)
+```
+
+![a14c071ca09465c02e4f2ee130601f6c](assets/a14c071ca09465c02e4f2ee130601f6c.png)
 
 
 
-
-
-
-
-
-
-
+```
+observations, _, dones, infos = [list(x) for x in zip(*outputs)]
+```
 
