@@ -209,10 +209,18 @@ observations = extract_instruction_tokens(
 
 ![08cc0f7c29b062067d4aaad50a913c8e](assets/08cc0f7c29b062067d4aaad50a913c8e.png)
 
+
+
 ```
         while envs.num_envs > 0 and len(stats_episodes) < episodes_to_eval:
-            t += 1
+            
+            # 取出当前的groundtruth episode
             current_episodes = envs.current_episodes()
+```
+
+![864f6de3a213add29786d9500be2825b](assets/864f6de3a213add29786d9500be2825b.png)
+
+```
             positions = []; headings = []
             for ob_i in range(len(current_episodes)):
                 agent_state_i = envs.call_at(ob_i,
@@ -221,7 +229,7 @@ observations = extract_instruction_tokens(
                 headings.append(agent_state_i['heading'])
 ```
 
-
+此步可得到当前agent的3维位置，以及朝向
 
 ```
 agent_state_i = {'position': [5.029807090759277, 0.17162801325321198, 4.014754295349121], 'heading': -1.6084072725305898, 'stop': False}
@@ -328,10 +336,12 @@ rgb_embedding: [batch_size x RGB_ENCODER.output_size]
                     logits = logits.masked_fill_(cand_mask, -float('inf'))
 ```
 
+
+
 得到action
 
 ```
-env_actions=[{'action': {'action': 4, 'action_args':{'angle': 1.466076374053955, 'distance': 2.0}}}]
+# env_actions=[{'action': {'action': 4, 'action_args':{'angle': 1.466076374053955, 'distance': 2.0}}}]
 
 outputs = envs.step(env_actions)
 ```
@@ -343,4 +353,6 @@ outputs = envs.step(env_actions)
 ```
 observations, _, dones, infos = [list(x) for x in zip(*outputs)]
 ```
+
+![09a40af5194ec43517d7ae510a18006a](assets/09a40af5194ec43517d7ae510a18006a.png)
 
