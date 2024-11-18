@@ -268,6 +268,18 @@ rgb_embedding: [batch_size x RGB_ENCODER.output_size]
 
 2. candidate waypoints prediction
 
+   ```
+                       # candidate waypoints prediction
+                       cand_rgb, cand_depth, \
+                       cand_direction, cand_mask, candidate_lengths, \
+                       batch_angles, batch_distances, cand_inputs = self.policy.net(
+                           mode = "waypoint",
+                           waypoint_predictor = self.waypoint_predictor,
+                           observations = batch,
+                           in_train = False,
+                       )
+   ```
+
    in vlnce_baselines/models/Policy_ViewSelection_CMA.py
 
    先转变逆时针为顺时针
