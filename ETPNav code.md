@@ -217,3 +217,74 @@ wp_outputs = {
 
 ```
 
+
+
+到达一个ghost节点，之前从未来过
+
+
+
+wp-predictor预测
+
+
+
+identify_node：在连通图中加入该节点
+
+
+
+update_graph：对cand-wp合并
+
+1.合并到visited node，在当前所在节点和visited node之间连线。这种情况下的cand-wp就无法作为接下来可选的跳转点
+
+2.合并到ghost node，相当于合并了两个可选的跳转点
+
+3.成为新的ghost node，新增一个可选的跳转点
+
+
+
+对gpt而言，他只会知道目前所有visited node和ghost node。gpt选择一个ghost node之后，这个ghost node变成visited node，效果就是：
+
+len(visited node)+1,len(ghost node)-1
+
+
+
+```
+node_vp_ids = list(gmap.node_pos.keys())
+ghost_vp_ids = list(gmap.ghost_pos.keys())
+gmap_vp_ids = [None] + node_vp_ids + ghost_vp_ids
+```
+
+
+
+todo:
+
+1.
+
+```
+            if len(image_list) > 20:
+                # GPT-4o currently does not support queries with more than 20 images
+                a_t = [0]
+                print('Exceed image limit and stop!')
+```
+
+2.map description
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
