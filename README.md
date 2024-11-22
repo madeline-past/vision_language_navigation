@@ -106,3 +106,15 @@ curl: symbol lookup error: curl: undefined symbol: curl_easy_header
 sudo rm -rf /usr/local/bin/curl*
 ```
 
+
+
+2024.11.21update：
+
+将autodl一台机子原封不动克隆到另一台机子后报错：
+
+```
+Platform::WindowlessEglApplication::tryCreateContext(): cannot initialize EGL: EGL_NOT_INITIALIZED
+WindowlessContext: Unable to create windowless context
+```
+
+原因：两台机子的nvidia driver version不同
