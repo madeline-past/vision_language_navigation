@@ -1,0 +1,271 @@
+-------------------- Environment Prompts --------------------
+Instruction: Walk forward down the hall past the table on the left. Continue going forward to you reach the open doorway to the left. Turn left and walk forward, stop in front of the doorway to the bathroom. Turn right and enter that hallway stop and wait in front of the sink on your right. 
+History: The navigation has just begun, with no history.
+Trajectory: Place 0
+Map:
+Place 0 is connected with Places 2, 3, 1
+Previous Planning:
+Navigation has just started, with no planning yet.
+Action options (step 0): ['A.  Go to Place 1 which is corresponding to Image 1', 'B.  Go to Place 2 which is corresponding to Image 2', 'C.  Go to Place 3 which is corresponding to Image 3']
+-------------------- Output --------------------
+{
+  "Thought": "The instruction is to walk forward down the hall past the table on the left. Image 1 shows a hallway with a table on the left, which matches the initial part of the instruction. Therefore, I should go to Place 1.",
+  "New Planning": "1. Go to Place 1 (Image 1) and walk down the hall. 2. Look for an open doorway to the left. 3. Turn left and walk forward to the bathroom doorway. 4. Turn right and stop in front of the sink.",
+  "Action": "A"
+}
+tokens:1065
+-------------------- Environment Prompts --------------------
+Instruction: Walk forward down the hall past the table on the left. Continue going forward to you reach the open doorway to the left. Turn left and walk forward, stop in front of the doorway to the bathroom. Turn right and enter that hallway stop and wait in front of the sink on your right. 
+History: step 0:  Go to Place 1 which is corresponding to Image 1
+Trajectory: Place 0 1
+Map:
+Place 0 is connected with Places 2, 3
+Place 1 is connected with Places 4, 5
+Previous Planning:
+1. Go to Place 1 (Image 1) and walk down the hall. 2. Look for an open doorway to the left. 3. Turn left and walk forward to the bathroom doorway. 4. Turn right and stop in front of the sink.
+Action options (step 1): ['A.  Go to Place 2 which is corresponding to Image 2', 'B.  Go to Place 3 which is corresponding to Image 3', 'C.  Go to Place 4 which is corresponding to Image 4', 'D.  Go to Place 5 which is corresponding to Image 5']
+-------------------- Output --------------------
+{
+  "Thought": "I have already moved to Place 1. The instruction is to walk forward down the hall past the table on the left, which matches the description in Image 5. I should proceed to Place 5.",
+  "New Planning": "1. Go to Place 5 (Image 5) and continue down the hall. 2. Look for an open doorway to the left. 3. Turn left and walk forward to the bathroom doorway. 4. Turn right and stop in front of the sink.",
+  "Action": "D"
+}
+tokens:1231
+-------------------- Environment Prompts --------------------
+Instruction: Walk forward down the hall past the table on the left. Continue going forward to you reach the open doorway to the left. Turn left and walk forward, stop in front of the doorway to the bathroom. Turn right and enter that hallway stop and wait in front of the sink on your right. 
+History: step 0:  Go to Place 1 which is corresponding to Image 1, step 1:  Go to Place 5 which is corresponding to Image 5
+Trajectory: Place 0 1 5
+Map:
+Place 0 is connected with Places 2, 3
+Place 1 is connected with Places 4
+Place 5 is connected with Places 6
+Previous Planning:
+1. Go to Place 5 (Image 5) and continue down the hall. 2. Look for an open doorway to the left. 3. Turn left and walk forward to the bathroom doorway. 4. Turn right and stop in front of the sink.
+Action options (step 2): ['A.  Go to Place 2 which is corresponding to Image 2', 'B.  Go to Place 3 which is corresponding to Image 3', 'C.  Go to Place 4 which is corresponding to Image 4', 'D.  Go to Place 6 which is corresponding to Image 6']
+-------------------- Output --------------------
+{
+  "Thought": "I am currently at Place 5, and I need to continue down the hall. The instruction is to find an open doorway to the left, which aligns with the map showing Place 5 is connected to Place 6. Image 6 shows a hallway, which seems to be the correct direction to continue forward.",
+  "New Planning": "1. Go to Place 6 (Image 6) and continue down the hall. 2. Look for an open doorway to the left. 3. Turn left and walk forward to the bathroom doorway. 4. Turn right and stop in front of the sink.",
+  "Action": "D"
+}
+tokens:1279
+-------------------- Environment Prompts --------------------
+Instruction: Walk forward down the hall past the table on the left. Continue going forward to you reach the open doorway to the left. Turn left and walk forward, stop in front of the doorway to the bathroom. Turn right and enter that hallway stop and wait in front of the sink on your right. 
+History: step 0:  Go to Place 1 which is corresponding to Image 1, step 1:  Go to Place 5 which is corresponding to Image 5, step 2:  Go to Place 6 which is corresponding to Image 6
+Trajectory: Place 0 1 5 6
+Map:
+Place 0 is connected with Places 2, 3
+Place 1 is connected with Places 4
+Place 5 is connected with Place
+Place 6 is connected with Places 8, 7
+Previous Planning:
+1. Go to Place 6 (Image 6) and continue down the hall. 2. Look for an open doorway to the left. 3. Turn left and walk forward to the bathroom doorway. 4. Turn right and stop in front of the sink.
+Action options (step 3): ['A. stop', 'B.  Go to Place 2 which is corresponding to Image 2', 'C.  Go to Place 3 which is corresponding to Image 3', 'D.  Go to Place 4 which is corresponding to Image 4', 'E.  Go to Place 7 which is corresponding to Image 7', 'F.  Go to Place 8 which is corresponding to Image 8']
+-------------------- Output --------------------
+{
+  "Thought": "I am currently at Place 6. The instruction is to continue down the hall and look for an open doorway to the left. From the map, Place 6 is connected to Places 7 and 8. Images 7 and 8 show a hallway with potential doorways. I should proceed to Place 7 to continue following the hallway.",
+  "New Planning": "1. Go to Place 7 (Image 7) and continue down the hall. 2. Look for an open doorway to the left. 3. Turn left and walk forward to the bathroom doorway. 4. Turn right and stop in front of the sink.",
+  "Action": "E"
+}
+tokens:1428
+-------------------- Environment Prompts --------------------
+Instruction: Walk forward down the hall past the table on the left. Continue going forward to you reach the open doorway to the left. Turn left and walk forward, stop in front of the doorway to the bathroom. Turn right and enter that hallway stop and wait in front of the sink on your right. 
+History: step 0:  Go to Place 1 which is corresponding to Image 1, step 1:  Go to Place 5 which is corresponding to Image 5, step 2:  Go to Place 6 which is corresponding to Image 6, step 3:  Go to Place 7 which is corresponding to Image 7
+Trajectory: Place 0 1 5 6 7
+Map:
+Place 0 is connected with Places 2, 3
+Place 1 is connected with Places 4
+Place 5 is connected with Place
+Place 6 is connected with Places 8
+Place 7 is connected with Places 11, 9, 10
+Previous Planning:
+1. Go to Place 7 (Image 7) and continue down the hall. 2. Look for an open doorway to the left. 3. Turn left and walk forward to the bathroom doorway. 4. Turn right and stop in front of the sink.
+Action options (step 4): ['A. stop', 'B.  Go to Place 2 which is corresponding to Image 2', 'C.  Go to Place 3 which is corresponding to Image 3', 'D.  Go to Place 4 which is corresponding to Image 4', 'E.  Go to Place 8 which is corresponding to Image 8', 'F.  Go to Place 9 which is corresponding to Image 9', 'G.  Go to Place 10 which is corresponding to Image 10', 'H.  Go to Place 11 which is corresponding to Image 11']
+-------------------- Output --------------------
+{
+  "Thought": "I am currently at Place 7. According to the instruction, I need to continue down the hall and look for an open doorway to the left. From the map, Place 7 is connected to Places 11, 9, and 10. I should explore these options to find the open doorway.",
+  "New Planning": "1. Go to Place 11 (Image 11) and check for an open doorway to the left. 2. If not found, explore Place 9 (Image 9) and Place 10 (Image 10) for the doorway.",
+  "Action": "H"
+}
+tokens:1660
+-------------------- Environment Prompts --------------------
+Instruction: Walk forward down the hall past the table on the left. Continue going forward to you reach the open doorway to the left. Turn left and walk forward, stop in front of the doorway to the bathroom. Turn right and enter that hallway stop and wait in front of the sink on your right. 
+History: step 0:  Go to Place 1 which is corresponding to Image 1, step 1:  Go to Place 5 which is corresponding to Image 5, step 2:  Go to Place 6 which is corresponding to Image 6, step 3:  Go to Place 7 which is corresponding to Image 7, step 4:  Go to Place 11 which is corresponding to Image 11
+Trajectory: Place 0 1 5 6 7 11
+Map:
+Place 0 is connected with Places 2, 3
+Place 1 is connected with Places 4
+Place 5 is connected with Place
+Place 6 is connected with Places 8
+Place 7 is connected with Places 9, 10
+Place 11 is connected with Places 14, 15, 12, 13
+Previous Planning:
+1. Go to Place 11 (Image 11) and check for an open doorway to the left. 2. If not found, explore Place 9 (Image 9) and Place 10 (Image 10) for the doorway.
+Action options (step 5): ['A. stop', 'B.  Go to Place 2 which is corresponding to Image 2', 'C.  Go to Place 3 which is corresponding to Image 3', 'D.  Go to Place 4 which is corresponding to Image 4', 'E.  Go to Place 8 which is corresponding to Image 8', 'F.  Go to Place 9 which is corresponding to Image 9', 'G.  Go to Place 10 which is corresponding to Image 10', 'H.  Go to Place 12 which is corresponding to Image 12', 'I.  Go to Place 13 which is corresponding to Image 13', 'J.  Go to Place 14 which is corresponding to Image 14', 'K.  Go to Place 15 which is corresponding to Image 15']
+-------------------- Output --------------------
+{"Thought": "I am currently at Place 11. According to the instruction, I need to find an open doorway to the left. Since I haven't found it yet, I should explore Place 9 and Place 10 as per the previous planning to locate the doorway.", "New Planning": "1. Explore Place 9 (Image 9) to check for the open doorway. 2. If not found, explore Place 10 (Image 10).", "Action": "F"}
+tokens:1977
+-------------------- Environment Prompts --------------------
+Instruction: Walk forward down the hall past the table on the left. Continue going forward to you reach the open doorway to the left. Turn left and walk forward, stop in front of the doorway to the bathroom. Turn right and enter that hallway stop and wait in front of the sink on your right. 
+History: step 0:  Go to Place 1 which is corresponding to Image 1, step 1:  Go to Place 5 which is corresponding to Image 5, step 2:  Go to Place 6 which is corresponding to Image 6, step 3:  Go to Place 7 which is corresponding to Image 7, step 4:  Go to Place 11 which is corresponding to Image 11, step 5:  Go to Place 9 which is corresponding to Image 9
+Trajectory: Place 0 1 5 6 7 11 9
+Map:
+Place 0 is connected with Places 2, 3
+Place 1 is connected with Places 4
+Place 5 is connected with Place
+Place 6 is connected with Places 8
+Place 7 is connected with Places 10
+Place 11 is connected with Places 14, 15, 12, 13
+Place 9 is connected with Places 14, 16
+Previous Planning:
+1. Explore Place 9 (Image 9) to check for the open doorway. 2. If not found, explore Place 10 (Image 10).
+Action options (step 6): ['A. stop', 'B.  Go to Place 2 which is corresponding to Image 2', 'C.  Go to Place 3 which is corresponding to Image 3', 'D.  Go to Place 4 which is corresponding to Image 4', 'E.  Go to Place 8 which is corresponding to Image 8', 'F.  Go to Place 10 which is corresponding to Image 10', 'G.  Go to Place 12 which is corresponding to Image 12', 'H.  Go to Place 13 which is corresponding to Image 13', 'I.  Go to Place 14 which is corresponding to Image 14', 'J.  Go to Place 15 which is corresponding to Image 15', 'K.  Go to Place 16 which is corresponding to Image 16']
+-------------------- Output --------------------
+{"Thought": "I need to find the open doorway to the left as per the instruction. Since I have already explored Place 9 and didn't find it, I should proceed to explore Place 10 next, as it is connected to Place 7 and might have the open doorway to the left that I need to turn into.", "New Planning": "1. Explore Place 10 (Image 10) to check for the open doorway. 2. If found, turn left and proceed as per the instruction.", "Action": "F"}
+tokens:1999
+-------------------- Environment Prompts --------------------
+Instruction: Walk forward down the hall past the table on the left. Continue going forward to you reach the open doorway to the left. Turn left and walk forward, stop in front of the doorway to the bathroom. Turn right and enter that hallway stop and wait in front of the sink on your right. 
+History: step 0:  Go to Place 1 which is corresponding to Image 1, step 1:  Go to Place 5 which is corresponding to Image 5, step 2:  Go to Place 6 which is corresponding to Image 6, step 3:  Go to Place 7 which is corresponding to Image 7, step 4:  Go to Place 11 which is corresponding to Image 11, step 5:  Go to Place 9 which is corresponding to Image 9, step 6:  Go to Place 10 which is corresponding to Image 10
+Trajectory: Place 0 1 5 6 7 11 9 10
+Map:
+Place 0 is connected with Places 2, 3
+Place 1 is connected with Places 4
+Place 5 is connected with Place
+Place 6 is connected with Places 8
+Place 7 is connected with Place
+Place 11 is connected with Places 14, 15, 12, 13
+Place 9 is connected with Places 14, 16
+Place 10 is connected with Places 8, 17, 18
+Previous Planning:
+1. Explore Place 10 (Image 10) to check for the open doorway. 2. If found, turn left and proceed as per the instruction.
+Action options (step 7): ['A. stop', 'B.  Go to Place 2 which is corresponding to Image 2', 'C.  Go to Place 3 which is corresponding to Image 3', 'D.  Go to Place 4 which is corresponding to Image 4', 'E.  Go to Place 8 which is corresponding to Image 8', 'F.  Go to Place 12 which is corresponding to Image 12', 'G.  Go to Place 13 which is corresponding to Image 13', 'H.  Go to Place 14 which is corresponding to Image 14', 'I.  Go to Place 15 which is corresponding to Image 15', 'J.  Go to Place 16 which is corresponding to Image 16', 'K.  Go to Place 17 which is corresponding to Image 17', 'L.  Go to Place 18 which is corresponding to Image 18']
+-------------------- Output --------------------
+{"Thought": "I need to follow the instruction to find the open doorway to the left. From the map, Place 10 is connected to Place 18, which seems to be the next step in the instruction. I should proceed to Place 18 to continue following the path described in the instruction.", "New Planning": "1. Go to Place 18 (Image 18) to check for the open doorway. 2. If found, turn left and proceed as per the instruction.", "Action": "L"}
+tokens:2134
+-------------------- Environment Prompts --------------------
+Instruction: Walk forward down the hall past the table on the left. Continue going forward to you reach the open doorway to the left. Turn left and walk forward, stop in front of the doorway to the bathroom. Turn right and enter that hallway stop and wait in front of the sink on your right. 
+History: step 0:  Go to Place 1 which is corresponding to Image 1, step 1:  Go to Place 5 which is corresponding to Image 5, step 2:  Go to Place 6 which is corresponding to Image 6, step 3:  Go to Place 7 which is corresponding to Image 7, step 4:  Go to Place 11 which is corresponding to Image 11, step 5:  Go to Place 9 which is corresponding to Image 9, step 6:  Go to Place 10 which is corresponding to Image 10, step 7:  Go to Place 18 which is corresponding to Image 18
+Trajectory: Place 0 1 5 6 7 11 9 10 18
+Map:
+Place 0 is connected with Places 2, 3
+Place 1 is connected with Places 4
+Place 5 is connected with Place
+Place 6 is connected with Places 8
+Place 7 is connected with Place
+Place 11 is connected with Places 14, 15, 12, 13
+Place 9 is connected with Places 14, 16
+Place 10 is connected with Places 8, 17
+Place 18 is connected with Places 19, 20, 21, 22
+Previous Planning:
+1. Go to Place 18 (Image 18) to check for the open doorway. 2. If found, turn left and proceed as per the instruction.
+Action options (step 8): ['A. stop', 'B.  Go to Place 2 which is corresponding to Image 2', 'C.  Go to Place 3 which is corresponding to Image 3', 'D.  Go to Place 4 which is corresponding to Image 4', 'E.  Go to Place 8 which is corresponding to Image 8', 'F.  Go to Place 12 which is corresponding to Image 12', 'G.  Go to Place 13 which is corresponding to Image 13', 'H.  Go to Place 14 which is corresponding to Image 14', 'I.  Go to Place 15 which is corresponding to Image 15', 'J.  Go to Place 16 which is corresponding to Image 16', 'K.  Go to Place 17 which is corresponding to Image 17', 'L.  Go to Place 19 which is corresponding to Image 19', 'M.  Go to Place 20 which is corresponding to Image 20', 'N.  Go to Place 21 which is corresponding to Image 21', 'O.  Go to Place 22 which is corresponding to Image 22']
+Exceed image limit and stop!
+
+
+
+
+
+
+
+
+-------------------- Environment Prompts --------------------
+Instruction: Exit the living room and turn right into the kitchen. Turn left at the end of the counter and wait in the room across the hallway slightly to the left. 
+History: The navigation has just begun, with no history.
+Trajectory: Place 0
+Map:
+Place 0 is connected with Places 2, 4, 1, 3
+Previous Planning:
+Navigation has just started, with no planning yet.
+Action options (step 0): ['A.  Go to Place 1 which is corresponding to Image 1', 'B.  Go to Place 2 which is corresponding to Image 2', 'C.  Go to Place 3 which is corresponding to Image 3', 'D.  Go to Place 4 which is corresponding to Image 4']
+-------------------- Output --------------------
+{
+  "Thought": "The instruction is to exit the living room and turn right into the kitchen. Images 2, 3, and 4 depict a living room setting. Image 1 shows a different environment, possibly a hallway or another room. To follow the instruction, I should first exit the living room, which is depicted in Images 2, 3, and 4. Therefore, I should choose a path that leads out of the living room. Image 1 might be the exit point.",
+  "New Planning": "1. Go to Place 1 (Image 1) to exit the living room. 2. Look for the kitchen to the right. 3. Turn left at the end of the counter. 4. Wait in the room across the hallway slightly to the left.",
+  "Action": "A"
+}
+tokens:1197
+-------------------- Environment Prompts --------------------
+Instruction: Exit the living room and turn right into the kitchen. Turn left at the end of the counter and wait in the room across the hallway slightly to the left. 
+History: step 0:  Go to Place 1 which is corresponding to Image 1
+Trajectory: Place 0 1
+Map:
+Place 0 is connected with Places 2, 4, 3
+Place 1 is connected with Places 5, 2
+Previous Planning:
+1. Go to Place 1 (Image 1) to exit the living room. 2. Look for the kitchen to the right. 3. Turn left at the end of the counter. 4. Wait in the room across the hallway slightly to the left.
+Action options (step 1): ['A.  Go to Place 2 which is corresponding to Image 2', 'B.  Go to Place 3 which is corresponding to Image 3', 'C.  Go to Place 4 which is corresponding to Image 4', 'D.  Go to Place 5 which is corresponding to Image 5']
+-------------------- Output --------------------
+{
+  "Thought": "I have exited the living room and need to find the kitchen to the right. Based on the map, I should explore Place 2 next, as it is connected to Place 1 and could potentially lead to the kitchen.",
+  "New Planning": [
+    "1. Go to Place 2 (Image 2) to find the kitchen.",
+    "2. Turn left at the end of the counter.",
+    "3. Wait in the room across the hallway slightly to the left."
+  ],
+  "Action": "A"
+}
+tokens:1204
+-------------------- Environment Prompts --------------------
+Instruction: Exit the living room and turn right into the kitchen. Turn left at the end of the counter and wait in the room across the hallway slightly to the left. 
+History: step 0:  Go to Place 1 which is corresponding to Image 1, step 1:  Go to Place 2 which is corresponding to Image 2
+Trajectory: Place 0 1 2
+Map:
+Place 0 is connected with Places 4, 3
+Place 1 is connected with Places 5
+Place 2 is connected with Places 4, 6, 7
+Previous Planning:
+['1. Go to Place 2 (Image 2) to find the kitchen.', '2. Turn left at the end of the counter.', '3. Wait in the room across the hallway slightly to the left.']
+Action options (step 2): ['A.  Go to Place 3 which is corresponding to Image 3', 'B.  Go to Place 4 which is corresponding to Image 4', 'C.  Go to Place 5 which is corresponding to Image 5', 'D.  Go to Place 6 which is corresponding to Image 6', 'E.  Go to Place 7 which is corresponding to Image 7']
+-------------------- Output --------------------
+{
+  "Thought": "I am currently at Place 2. The instruction is to exit the living room and turn right into the kitchen. From the map, Place 2 is connected to Places 4, 6, and 7. Based on the images, Place 6 seems to be a hallway leading to another room, which aligns with the instruction to turn left at the end of the counter and wait in the room across the hallway slightly to the left.",
+  "New Planning": [
+    "1. Go to Place 6 (Image 6) to follow the hallway.",
+    "2. Turn left at the end of the counter.",
+    "3. Wait in the room across the hallway slightly to the left."
+  ],
+  "Action": "D"
+}
+tokens:1374
+-------------------- Environment Prompts --------------------
+Instruction: Exit the living room and turn right into the kitchen. Turn left at the end of the counter and wait in the room across the hallway slightly to the left. 
+History: step 0:  Go to Place 1 which is corresponding to Image 1, step 1:  Go to Place 2 which is corresponding to Image 2, step 2:  Go to Place 6 which is corresponding to Image 6
+Trajectory: Place 0 1 2 6
+Map:
+Place 0 is connected with Places 4, 3
+Place 1 is connected with Places 5
+Place 2 is connected with Places 4, 7
+Place 6 is connected with Places 11, 9, 8, 10, 12
+Previous Planning:
+['1. Go to Place 6 (Image 6) to follow the hallway.', '2. Turn left at the end of the counter.', '3. Wait in the room across the hallway slightly to the left.']
+Action options (step 3): ['A. stop', 'B.  Go to Place 3 which is corresponding to Image 3', 'C.  Go to Place 4 which is corresponding to Image 4', 'D.  Go to Place 5 which is corresponding to Image 5', 'E.  Go to Place 7 which is corresponding to Image 7', 'F.  Go to Place 8 which is corresponding to Image 8', 'G.  Go to Place 9 which is corresponding to Image 9', 'H.  Go to Place 10 which is corresponding to Image 10', 'I.  Go to Place 11 which is corresponding to Image 11', 'J.  Go to Place 12 which is corresponding to Image 12']
+-------------------- Output --------------------
+{
+    "Thought": "I am currently at Place 6. The instruction is to exit the living room and turn right into the kitchen, then turn left at the end of the counter and wait in the room across the hallway slightly to the left. Based on the map, I should explore the connected places to find the kitchen and the room across the hallway. Place 8 seems to be a continuation of the hallway, which might lead to the kitchen.",
+    "New Planning": [
+        "1. Go to Place 8 to explore the hallway further.",
+        "2. Look for the kitchen and the room across the hallway slightly to the left."
+    ],
+    "Action": "F"
+}
+tokens:1825
+-------------------- Environment Prompts --------------------
+Instruction: Exit the living room and turn right into the kitchen. Turn left at the end of the counter and wait in the room across the hallway slightly to the left. 
+History: step 0:  Go to Place 1 which is corresponding to Image 1, step 1:  Go to Place 2 which is corresponding to Image 2, step 2:  Go to Place 6 which is corresponding to Image 6, step 3:  Go to Place 8 which is corresponding to Image 8
+Trajectory: Place 0 1 2 6 8
+Map:
+Place 0 is connected with Places 4, 3
+Place 1 is connected with Places 5
+Place 2 is connected with Places 4, 7
+Place 6 is connected with Places 11, 9, 10, 12
+Place 8 is connected with Places 15, 13, 14, 16
+Previous Planning:
+['1. Go to Place 8 to explore the hallway further.', '2. Look for the kitchen and the room across the hallway slightly to the left.']
+Action options (step 4): ['A. stop', 'B.  Go to Place 3 which is corresponding to Image 3', 'C.  Go to Place 4 which is corresponding to Image 4', 'D.  Go to Place 5 which is corresponding to Image 5', 'E.  Go to Place 7 which is corresponding to Image 7', 'F.  Go to Place 9 which is corresponding to Image 9', 'G.  Go to Place 10 which is corresponding to Image 10', 'H.  Go to Place 11 which is corresponding to Image 11', 'I.  Go to Place 12 which is corresponding to Image 12', 'J.  Go to Place 13 which is corresponding to Image 13', 'K.  Go to Place 14 which is corresponding to Image 14', 'L.  Go to Place 15 which is corresponding to Image 15', 'M.  Go to Place 16 which is corresponding to Image 16']
+ERROR:root:未知错误: [Errno 7] Argument list too long: 'curl'
+ERROR:root:未知错误: [Errno 7] Argument list too long: 'curl'
+ERROR:root:未知错误: [Errno 7] Argument list too long: 'curl'
+ERROR:root:未知错误: [Errno 7] Argument list too long: 'curl'
+^CKilling subprocess 9627
+Main process received SIGINT, exiting
+2024-11-22 17:02:49,809 Worker KeyboardInterrupt
