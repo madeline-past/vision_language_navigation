@@ -118,3 +118,33 @@ WindowlessContext: Unable to create windowless context
 ```
 
 原因：两台机子的nvidia driver version不同
+
+
+
+2024.12.4update：
+
+如何让docker使用宿主机的代理：
+
+第一步，参考https://www.cnblogs.com/Chary/p/18096678配置~/.docker/config.json
+
+```
+{
+ "proxies":
+ {
+   "default":
+   {
+     "httpProxy": "http://127.0.0.1:7890",
+     "httpsProxy": "http://127.0.0.1:7890"
+   }
+ }
+}
+```
+
+第二步，此处解决办法参考博客https://kebingzao.com/2019/02/22/docker-container-proxy/
+
+```
+# 在docker run阶段添加--net host选项，使docker跟宿主机共用一个 Network Namespace
+sudo docker run -it --net host --gpus all --mount type=bind,source=$MATTERPORT_DATA_DIR,target=/root/mount/Matterport3DSimulator/data/v1/scans --volume "$(pwd)":/root/mount/Matterport3DSimulator mattersim:9.2-devel-ubuntu18.04
+```
+
+在中文屎山博客中寻找解答的心酸过程暂且略去不记。
