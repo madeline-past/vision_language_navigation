@@ -125,7 +125,7 @@ WindowlessContext: Unable to create windowless context
 
 如何让docker使用宿主机的代理：
 
-第一步，参考https://www.cnblogs.com/Chary/p/18096678，配置~/.docker/config.json
+第一步，配置~/.docker/config.json，参考https://www.cnblogs.com/Chary/p/18096678
 
 ```
 {
