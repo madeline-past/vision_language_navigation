@@ -149,3 +149,11 @@ sudo docker run -it --net host --gpus all --mount type=bind,source=$MATTERPORT_D
 ```
 
 在中文屎山博客中寻找解答的心酸过程暂且略去不记。
+
+
+
+
+
+2025.1.2update：
+
+在ModelScope下载 “通义千问2-VL-7B-Instruct” 模型，下载好的模型中居然多了一个16G的.git文件夹。为了硬盘空间已删去.git。
